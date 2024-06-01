@@ -1,0 +1,317 @@
+***MAPQUEST***
+
+B.	Consumo de API Pública
+
+Utilizando el sitio de MapQuest y el token generado en laboratorio respectivo, deberá crear un código en VisualStudio Code de la máquina virtual DEVASC, donde el programa realice lo siguiente:
+
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+#1_Medir la distancia en kilómetros entre Santiago y Ovalle#
+
+import requests
+
+route_url = "http://www.mapquestapi.com/directions/v2/route"
+key = "OIjeA0ZpFdA4P4SgNKpjL8TykFnk4fUh" #API KEY
+
+def calcular_distancia_kilometros(origen, destino, key):
+    params = {
+        "key": key,
+        "from": origen,
+        "to": destino,
+        "unit": "k"  #Distancia en kilómetros
+    }
+    replydata = requests.get(route_url, params=params)
+    if replydata.status_code == 200:
+        json_data = replydata.json()
+        distancia_km = json_data["route"]["distance"]  #Calculo de la distancia en km
+        return distancia_km
+    else:
+        return "Error al obtener la distancia"
+
+#Impresión del resultado
+origen = "[Santiago]"
+destino = "[Ovalle]"
+distancia = calcular_distancia_kilometros(origen, destino, key)
+if isinstance(distancia, float):
+    print("#######################################################################")
+    print("  La distancia entre {} y {} es de {} kilómetros".format(origen, destino, distancia))
+    print("#######################################################################")
+else:
+    print(distancia)
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+#2_Solicitar “Ciudad de Origen” y “Ciudad de Destino”#
+
+import requests
+
+route_url = "http://www.mapquestapi.com/directions/v2/route"
+key = "OIjeA0ZpFdA4P4SgNKpjL8TykFnk4fUh"  #API KEY
+
+def calcular_distancia_kilometros(origen, destino, key):
+    params = {
+        "key": key,
+        "from": origen,
+        "to": destino,
+        "unit": "k"  #Distancia en kilómetros
+    }
+    replydata = requests.get(route_url, params=params)
+    if replydata.status_code == 200:
+        json_data = replydata.json()
+        distancia_km = json_data["route"]["distance"]  #Cálculo de la distancia en km
+        return distancia_km
+    else:
+        return "Error al obtener la distancia"
+
+#Solicitar_Ciudad_de_Origen_y_Ciudad_de_Destino#
+print("#######################################################################")
+origen = input("  Por favor, ingrese la ciudad de origen: ")
+destino = input("  Por favor, ingrese la ciudad de destino: ")
+
+#Imprimir la distancia y mostrar el resultado
+distancia = calcular_distancia_kilometros(origen, destino, key)
+if isinstance(distancia, float):
+    print("-----------------------------------------------------------------------")
+    print("  La distancia entre {} y {} es de {} kilómetros".format(origen, destino, distancia))
+    print("#######################################################################")
+else:
+    print(distancia)
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+#3_Mostrar la duración del viaje en horas, minutos y segundos#
+
+import requests
+
+route_url = "http://www.mapquestapi.com/directions/v2/route"
+key = "OIjeA0ZpFdA4P4SgNKpjL8TykFnk4fUh"  #API KEY
+
+def calcular_distancia_y_duracion(origen, destino, key):
+    params = {
+        "key": key,
+        "from": origen,
+        "to": destino,
+        "unit": "k"  #Distancia en kilómetros
+    }
+    replydata = requests.get(route_url, params=params)
+    if replydata.status_code == 200:
+        json_data = replydata.json()
+        distancia_km = json_data["route"]["distance"]  #Cálculo de la distancia en km
+        duracion_horas_auto = distancia_km / 60        #Si el vehiculo viaja a 60 km/h
+        duracion_horas_caminando = distancia_km / 5    #Si se camina a 5 km/h aproximadamente
+        return distancia_km, duracion_horas_auto, duracion_horas_caminando
+    else:
+        return "Error al obtener la distancia"
+
+#Solicitar ciudad de origen y ciudad de destino
+print("#######################################################################")
+origen = input("  Por favor, ingrese la ciudad de origen: ")
+destino = input("  Por favor, ingrese la ciudad de destino: ")
+
+#Calculo de la distancia y la duración del viaje
+resultado = calcular_distancia_y_duracion(origen, destino, key)
+if isinstance(resultado, tuple):
+    distancia_km, duracion_horas_auto, duracion_horas_caminando = resultado
+    print("-----------------------------------------------------------------------")
+    print("  La distancia entre {} y {} es de {} kilómetros".format(origen, destino, distancia_km))
+    print("  El calculo de la duración del viaje considera : \n  1)Si el vehiculo viaja a 60 km/h y \n  2)Si se camina a 5 km/h aproximadamente")
+    print("  La duración del viaje en auto es de: {:.2f} horas".format(duracion_horas_auto))
+    print("  La duración del viaje caminando es de: {:.2f} horas".format(duracion_horas_caminando))
+    print("#######################################################################")
+else:
+    print(resultado)
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+#4_Mostrar_el_combustible_requerido_para_el_viaje_representado_en_litros#
+
+import requests
+
+route_url = "http://www.mapquestapi.com/directions/v2/route"
+key = "OIjeA0ZpFdA4P4SgNKpjL8TykFnk4fUh"  #API KEY
+
+def calcular_distancia_y_duracion(origen, destino, key):
+    params = {
+        "key": key,
+        "from": origen,
+        "to": destino,
+        "unit": "k"  #Distancia en kilómetros
+    }
+    replydata = requests.get(route_url, params=params)
+    if replydata.status_code == 200:
+        json_data = replydata.json()
+        distancia_km = json_data["route"]["distance"]   #Cálculo de la distancia en km
+        duracion_horas_auto = distancia_km / 60         #Si el vehículo viaja a 60 km/h aprox.
+        duracion_horas_caminando = distancia_km / 5     #Si se camina a 5 km/h aprox.
+        return distancia_km, duracion_horas_auto, duracion_horas_caminando
+    else:
+        return "Error al obtener la distancia"
+
+def calcular_combustible(distancia):
+    rendimiento = 9  #Se considera 9 km/litro aprox. 
+    combustible = distancia / rendimiento
+    return combustible
+
+#Solicitar ciudad de origen y ciudad de destino
+print("-----------------------------------------------------------------------")
+origen = input(" Por favor, ingrese la ciudad de origen: ")
+destino = input(" Por favor, ingrese la ciudad de destino: ")
+
+#Calcular la distancia y la duración del viaje
+resultado = calcular_distancia_y_duracion(origen, destino, key)
+if isinstance(resultado, tuple):
+    distancia_km, duracion_horas_auto, duracion_horas_caminando = resultado
+    combustible_auto = calcular_combustible(distancia_km)
+
+    #Imprimir resultados
+    print(" La distancia entre {} y {} es {:.2f} kilómetros".format(origen, destino, distancia_km))
+    print("-----------------------------------------------------------------------")
+    print(" El cálculo de la duración del viaje considera:")
+    print("  1) Si el vehículo viaja a 60 km/h aprox.")
+    print("  2) Si se camina a 5 km/h aprox.")
+    print(" La duración del viaje en auto es: {:.2f} horas".format(duracion_horas_auto))
+    print(" La duración del viaje caminando es: {:.2f} horas".format(duracion_horas_caminando))
+    print("-----------------------------------------------------------------------")
+    print(" Si se considera un gasto de 9 km/litro:")
+    print(" El combustible requerido para el viaje en auto es: {:.2f} litros".format(combustible_auto))
+    print("-----------------------------------------------------------------------")
+else:
+    print(resultado)
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+#5_Todos_los_valores_deben_utilizar_dos_decimales#   (Este requerimiento se encuentra en #4_Mostrar_el_combustible_requerido_para_el_viaje_representado_en_litros#)
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+#6_Mostrar_la_narrativa_del_viaje#
+
+import requests
+
+route_url = "http://www.mapquestapi.com/directions/v2/route"
+key = "OIjeA0ZpFdA4P4SgNKpjL8TykFnk4fUh"  #API KEY
+
+def calcular_distancia_y_duracion(origen, destino, key):
+    params = {
+        "key": key,
+        "from": origen,
+        "to": destino,
+        "unit": "k"  #Distancia en kilómetros
+    }
+    replydata = requests.get(route_url, params=params)
+    if replydata.status_code == 200:
+        json_data = replydata.json()
+        distancia_km = json_data["route"]["distance"]   #Cálculo de la distancia en km
+        duracion_horas_auto = distancia_km / 60         #Si el vehículo viaja a 60 km/h aprox.
+        duracion_horas_caminando = distancia_km / 5     #Si se camina a 5 km/h aprox.
+        return distancia_km, duracion_horas_auto, duracion_horas_caminando
+    else:
+        return "Error al obtener la distancia"
+
+def calcular_combustible(distancia):
+    rendimiento = 9  #Se considera 9 km/litro aprox. 
+    combustible = distancia / rendimiento
+    return combustible
+
+#Bienvenida al calculador de viajes
+print("-----------------------------------------------------------------------")
+print("                   Bienvenido al calculador de viajes")
+print("#######################################################################")
+
+#Solicitar ciudad de origen y ciudad de destino
+origen = input(" Por favor, ingrese la ciudad de origen: ")
+destino = input(" Por favor, ingrese la ciudad de destino: ")
+
+#Calcular la distancia y la duración del viaje
+resultado = calcular_distancia_y_duracion(origen, destino, key)
+if isinstance(resultado, tuple):
+    distancia_km, duracion_horas_auto, duracion_horas_caminando = resultado
+    combustible_auto = calcular_combustible(distancia_km)
+
+    #Imprimir resultados
+    print(" La distancia entre {} y {} es {:.2f} kilómetros".format(origen, destino, distancia_km))
+    print("-----------------------------------------------------------------------")
+    print(" El cálculo de la duración del viaje considera:")
+    print("  1) Si el vehículo viaja a 60 km/h aprox.")
+    print("  2) Si se camina a 5 km/h aprox.")
+    print(" La duración del viaje en auto es: {:.2f} horas".format(duracion_horas_auto))
+    print(" La duración del viaje caminando es: {:.2f} horas".format(duracion_horas_caminando))
+    print("-----------------------------------------------------------------------")
+    print(" Si se considera un gasto de 9 km/litro:")
+    print(" El combustible requerido para el viaje en auto es: {:.2f} litros".format(combustible_auto))
+    print("-----------------------------------------------------------------------")
+else:
+    print(resultado)
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+#7_Agregar_una_salida_del_programa_con_la_letra_q#
+
+import requests
+
+route_url = "http://www.mapquestapi.com/directions/v2/route"
+key = "OIjeA0ZpFdA4P4SgNKpjL8TykFnk4fUh"  #API KEY
+
+def calcular_distancia_y_duracion(origen, destino, key):
+    params = {
+        "key": key,
+        "from": origen,
+        "to": destino,
+        "unit": "k"  #Distancia en km
+    }
+    replydata = requests.get(route_url, params=params)
+    if replydata.status_code == 200:
+        json_data = replydata.json()
+        distancia_km = json_data["route"]["distance"]   # Cálculo de la distancia en km
+        duracion_horas_auto = distancia_km / 60         # Si el vehículo viaja a 60 km/h aprox.
+        duracion_horas_caminando = distancia_km / 5     # Si se camina a 5 km/h aprox.
+        return distancia_km, duracion_horas_auto, duracion_horas_caminando
+    else:
+        return "Error al obtener la distancia"
+
+def calcular_combustible(distancia):
+    rendimiento = 9  # Se considera 9 km/litro aprox.
+    combustible = distancia / rendimiento
+    return combustible
+
+def main():
+    while True:
+	print("-----------------------------------------------------------------------")
+        print("               Bienvenido al calculador de viajes")
+        print("                   [Ingrese 'q' para salir]")
+	print("#######################################################################")
+
+        ciudad_origen = input("ciudad de Origen: ").strip()
+        if ciudad_origen.lower() == 'q':
+            print("¡Hasta luego!")
+            break
+        ciudad_destino = input("ciudad de Destino: ").strip()
+        if ciudad_destino.lower() == 'q':
+            print("¡Hasta luego!")
+            break
+        else:
+            resultado = calcular_distancia_y_duracion(ciudad_origen, ciudad_destino, key)
+            if isinstance(resultado, tuple):
+                distancia_km, duracion_horas_auto, duracion_horas_caminando = resultado
+                combustible_auto = calcular_combustible(distancia_km)
+
+                # Imprimir resultados
+                print("-----------------------------------------------------------------------")
+                print(" La distancia entre {} y {} es {:.2f} kilómetros".format(ciudad_origen, ciudad_destino, distancia_km))
+                print("-----------------------------------------------------------------------")
+                print(" El cálculo de la duración del viaje considera:")
+                print("  1) Si el vehículo viaja a 60 km/h aprox.")
+                print("  2) Si se camina a 5 km/h aprox.")
+                print(" La duración del viaje en auto es: {:.2f} horas".format(duracion_horas_auto))
+                print(" La duración del viaje caminando es: {:.2f} horas".format(duracion_horas_caminando))
+                print("-----------------------------------------------------------------------")
+                print(" Si se considera un gasto de 9 km/litro:")
+                print(" El combustible requerido para el viaje en auto es: {:.2f} litros".format(combustible_auto))
+                print("-----------------------------------------------------------------------")
+            else:
+                print("No se pudo obtener la información del viaje. Verifique las ciudades ingresadas y su conexión a internet.\n")
+
+if __name__ == "__main__":
+    main()
+
