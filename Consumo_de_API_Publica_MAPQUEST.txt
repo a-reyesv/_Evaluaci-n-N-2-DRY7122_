@@ -1,6 +1,6 @@
 ***MAPQUEST***
 
-B.	Consumo de API Pública
+Consumo de API Pública
 
 Utilizando el sitio de MapQuest y el token generado en laboratorio respectivo, deberá crear un código en VisualStudio Code de la máquina virtual DEVASC, donde el programa realice lo siguiente:
 
